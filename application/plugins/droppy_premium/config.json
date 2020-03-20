@@ -1,0 +1,12 @@
+{
+  "premium": {
+    "name": "Droppy Premium",
+    "version": "2.0.3",
+    "load": "droppy_premium",
+    "translation": "premium_lang",
+    "sandbox": false,
+    "cancel_suspend": 604800,
+    "cron": "gateway/paypal/cron.php",
+    "init": "init.php"
+  }
+}
