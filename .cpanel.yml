@@ -1,5 +1,5 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/webninj/public_html/sendxo
-    - /bin/cp * $DEPLOYPATH
+    - /bin/cp -r * $DEPLOYPATH
   
