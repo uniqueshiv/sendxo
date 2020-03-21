@@ -38,8 +38,7 @@ class Login extends CI_Controller {
         );
 
         if(isset($_POST) && !empty($_POST)) {
-			print_r($this->input->post());
-			
+		
             if($this->authlib->authUser($this->input->post())) {
                 redirect('/');
             }
