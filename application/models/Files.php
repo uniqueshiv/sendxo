@@ -21,7 +21,6 @@ class Files extends CI_Model {
         $query = $this->db->insert('droppy_files', $data);
 
         if($query) {
-            echo "successsss save file in db";
             return true;
         }
         return false;
