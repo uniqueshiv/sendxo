@@ -125,7 +125,6 @@ class Accounts extends CI_Model {
         $this->db->where('email', $email);
 
         $query = $this->db->get();
-print_r($query->row_array());
         if($query->num_rows() > 0) {
             return $query->row_array();
         }

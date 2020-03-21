@@ -198,9 +198,6 @@ $pmset = $clsSettings->getSettings();
 
 						$get_info = $clsUser->getBySubIDAndID($session_id, $sub_id);
 
-					   echo "<pre>";
-					   print_r($clsUser);
-
 						if($get_info !== false):
 					?>
 			<div class="row">
