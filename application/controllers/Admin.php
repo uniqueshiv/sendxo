@@ -223,6 +223,62 @@ class Admin extends CI_Controller {
         $this->load->view('admin/_elem/footer', $data);
     }
 
+    public function address(){
+        $this->load->model('address');
+        $this->load->helper('url');
+
+        // POST processing
+        if($this->input->post('action') == 'edit_user') {
+            $form_data['email']       = $this->input->post('email');
+           
+            // Update user by ID
+            $this->address->updateByID($form_data, $this->input->post('id'));
+
+            header('Location: '.$this->config->item('site_url') . 'admin/address');
+        }
+        elseif($this->input->post('action') == 'add_user') {
+            $form_data['email']       = $this->input->post('email');
+
+            $this->address->add($this->input->post('email'));
+
+            header('Location: '.$this->config->item('site_url') . 'admin/address');
+        }
+        if($this->uri->segment(5) == 'delete') {
+            $this->address->deleteByID($this->uri->segment(6));
+        }
+
+        // Get the page number
+        $page = $this->uri->segment(4);
+        if(empty($page) || $this->uri->segment(3) != 'page') {
+            $page = 0;
+        }
+        $start = ($page * 20);
+
+        // View data
+        $data = array(
+            'settings'  => $this->config->config,
+            'page'      => $page,
+            'total'     => $this->address->getTotal(),
+            'users'     => $this->address->getAll($start, 20)
+        );
+
+        // Loading views
+        $this->load->view('admin/_elem/header', $data);
+        $this->load->view('admin/_elem/navbar', $data);
+        $this->load->view('admin/_elem/sidebar', $data);
+
+        if($this->uri->segment(3) == 'edit') {
+            $data['user'] = $this->address->getByID($this->uri->segment(4));
+            $this->load->view('admin/editaddress', $data);
+        } elseif($this->uri->segment(3) == 'add') {
+            $this->load->view('admin/addaddress', $data);
+        } else {
+            $this->load->view('admin/address', $data);
+        }
+
+        $this->load->view('admin/_elem/footer', $data);
+    }
+
     public function backgrounds()
     {
         $this->load->model('backgrounds');

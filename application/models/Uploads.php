@@ -165,6 +165,8 @@ class Uploads extends CI_Model {
      * @return bool
      */
     function register($post) {
+        $this->load->model('address');
+
         $insert = array(
             'upload_id'     => $post['upload_id'],
             'email_from'    => $post['email_from'],
@@ -179,7 +181,6 @@ class Uploads extends CI_Model {
             'status'        => 'processing',
             'lang'          => $post['language'],
         );
-
         // This should be improved en moved to a more suitable place in the future...
         if(isset($_SESSION['droppy_premium'])) {
             $insert['pm_email'] = $_SESSION['droppy_premium'];

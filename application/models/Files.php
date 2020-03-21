@@ -10,6 +10,7 @@ class Files extends CI_Model {
      * @return boolean
      */
     function add($upload_id, $file_id, $file_name, $size) {
+
         $data = array(
             'upload_id'     => $upload_id,
             'secret_code'   => $file_id,
@@ -17,10 +18,10 @@ class Files extends CI_Model {
             'size'          => $size,
             'time'          => time()
         );
-
         $query = $this->db->insert('droppy_files', $data);
 
         if($query) {
+            echo "successsss save file in db";
             return true;
         }
         return false;

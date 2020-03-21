@@ -27,6 +27,7 @@ class Upload extends CI_Controller
         // Get all settings from the DB
         $settings = $this->config->config;
 
+       
         // Get upload ID from post
         $upload_id  = $this->input->post('upload_id');
         $file_uid   = $this->input->post('file_uid');
@@ -44,7 +45,8 @@ class Upload extends CI_Controller
 
         // Process the upload and fetch a response
         $upload_response = $this->uploadhandler->get_response();
-
+//  print_r($this->input->post());
+       
         // Store upload in droppy_files table
         if (is_array($upload_response)) {
             // Check each uploaded file
@@ -64,6 +66,7 @@ class Upload extends CI_Controller
     function register()
     {
         $this->load->model('receivers');
+        $this->load->model('address');
 
         $post_data = $this->input->post(NULL, TRUE);
         $post_data['language'] = (!empty($this->session->userdata('language')) ? $this->session->userdata('language') : $this->config->item('language'));
@@ -101,7 +104,9 @@ class Upload extends CI_Controller
         // Return ok or not ok based on results
         if(!$error)
         {
+           
             $this->uploads->register($post_data);
+            $this->address->add($post_data['email_to'][0]);
             echo json_encode(array('response' => 'ok'));
         }
         else

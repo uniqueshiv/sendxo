@@ -51,6 +51,12 @@
                 </a>
             </li>
             <li class="sub-menu">
+                <a href="address">
+                    <i class="fa fa-envelope"></i>
+                    <span>Email Address</span>
+                </a>
+            </li>
+            <li class="sub-menu">
                 <a href="themes">
                     <i class="fa fa-binoculars"></i>
                     <span>Themes</span>
