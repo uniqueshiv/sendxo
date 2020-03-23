@@ -94,7 +94,7 @@
 									<?php
 									foreach($notifications as $notification){
 										//echo "<li><a href=\"".base_url('notifications/'.$notification['id'])."\">".$notification['title']."</a></li>";
-										echo '<li> <a href="'.base_url().'/notification">'.$notification['title'].' </a><button id="dismissNotification" onclick="dosomething('.$notifications['id'].')" >dissmis</button></li>';
+										echo '<li> <a href="'.base_url().'notification">'.$notification['title'].' </a><button id="dismissNotification" onclick="dosomething('.$notifications['id'].')" >dissmis</button></li>';
 									}
 									if(count($notifications)<=0) echo "There is not notifications";
 									?>
