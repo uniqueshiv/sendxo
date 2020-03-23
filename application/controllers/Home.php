@@ -15,6 +15,8 @@ class Home extends CI_Controller {
         $this->load->model('socials');
         $this->load->model('backgrounds');
         $this->load->model('rename');
+        $this->load->library('session');
+        $this->load->model('notifications');
         // Load the helpers
         $this->load->helper('language');
         $this->load->helper('url');
@@ -27,12 +29,15 @@ class Home extends CI_Controller {
 
     public function index()
     {
+        $notif_all = "";
         $this->load->helper('cookie');
 
         if(!$this->authlib->pageAllowed('upload')) {
             redirect('/login');
         }
-
+        if(! empty($this->session->droppy_premium)){
+            $notif_all = $this->notifications->getByUserID($this->session->droppy_premium, false);
+        }
         // Data to pass through to views
         $data = array(
             'settings'      => $this->config->config,
@@ -40,7 +45,8 @@ class Home extends CI_Controller {
             'language_list' => $this->language->getAll(),
             'backgrounds'   => $this->backgrounds->getAllOrderID(),
             'custom_tabs'   => $this->plugin->_tabs,
-            'mobile'        => false
+            'mobile'        => false,
+            'notifications' => $notif_all
         );
 
         // Mobile Detect library

@@ -12,6 +12,7 @@ class Upload extends CI_Controller
 
         $this->load->model('uploads');
         $this->load->model('files');
+        $this->load->library('session');
     }
 
     /**
@@ -40,12 +41,13 @@ class Upload extends CI_Controller
         $config['upload_id']            = $upload_id;
         $config['file_id']              = md5($file_uid);
 
+
         // Init the upload library
         $this->load->library("UploadHandler", $config);
 
         // Process the upload and fetch a response
         $upload_response = $this->uploadhandler->get_response();
-//  print_r($this->input->post());
+        //  print_r($this->input->post());
        
         // Store upload in droppy_files table
         if (is_array($upload_response)) {
@@ -134,10 +136,18 @@ class Upload extends CI_Controller
             $post_data['total_files']++;
             $post_data['total_size'] += $file['size'];
         }
+        if(! empty($this->session->droppy_premium)){
+            $this->load->model('notifications');
+            $data = array(
+                "user_id" => $this->session->droppy_premium,
+                "title"   =>  "File uploaded successfull with upload id ".$post_data['upload_id'],
+            );
+            $this->notifications->create($data);
+        }
 
         // Complete the upload
         if($this->completehandler->complete($post_data)) {
-            $this->uploads->complete($post_data);
+            $this->uploads->complete($post_data); 
         }
     }
 
@@ -159,6 +169,15 @@ class Upload extends CI_Controller
 	* Delete Uploaded file by WEBNINJAZ 16 MARCH 2020
 	*/
 	function deletefile($uploadedid){
+
+        if(! empty($this->session->droppy_premium)){
+            $this->load->model('notifications');
+            $data = array(
+                "user_id" => $this->session->droppy_premium,
+                "title"   =>  "File deleted successfull with id ".$uploadedid,
+            );
+            $this->notifications->create($data);
+        }
 		if(!empty($uploadedid)){
 			$delete = $this->uploads->deletefile($uploadedid);
 			if($delete){

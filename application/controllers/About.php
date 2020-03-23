@@ -16,12 +16,14 @@ class About extends CI_Controller {
         $this->load->model('backgrounds');
 	    $this->load->model('socials');
         $this->load->model('users');
+        $this->load->model('notifications');
 
         // Load the helpers
         $this->load->helper('language');
         $this->load->helper('url');
 
         $this->load->library('AuthLib');
+        $this->load->library('session');
     }
 
     /**
@@ -30,12 +32,18 @@ class About extends CI_Controller {
  
     public function index()
     {
+        $notif_all = "";
+        if(! empty($this->session->droppy_premium)){
+            $notif_all = $this->notifications->getByUserID($this->session->droppy_premium, false);
+        }
+
         $data = array(
             'settings'    => $this->config->config,
 		   'socials'       => $this->socials->getAll(),
 		   'language_list' => $this->language->getAll(),
             'backgrounds' => $this->backgrounds->getAllOrderID(),
-            'noad'        => true
+            'noad'        => true,
+            'notifications' => $notif_all
         );
 
         if(isset($_POST) && !empty($_POST)) {

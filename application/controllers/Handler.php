@@ -89,6 +89,7 @@ class Handler extends CI_Controller {
         $this->load->helper('string');
 
         $this->load->library('UploadLib');
+        $this->load->library('session');
 
         // Post data
         $post = $this->input->post(NULL, TRUE);
@@ -121,7 +122,7 @@ class Handler extends CI_Controller {
                             // Send email to uploader
 
                             //print_r($this->email);
-                            $this->email->sendEmail('downloaded', array('upload_id' => $post['download_id'], 'download_email' => $receiver['email']), array($download['email_from']), $download['lang']);
+                            // $this->email->sendEmail('downloaded', array('upload_id' => $post['download_id'], 'download_email' => $receiver['email']), array($download['email_from']), $download['lang']);
                         }
 
                         // Log the download
@@ -131,6 +132,16 @@ class Handler extends CI_Controller {
                             'ip' => $this->input->ip_address(),
                             'email' => $receiver['email']
                         ));
+
+                        if(! empty($this->session->droppy_premium)){
+                            $this->load->model('notifications');
+                            $data = array(
+                                "user_id" => $this->session->droppy_premium,
+                                "title"   =>  "File downloaded successfull "
+                            );
+                            $this->notifications->create($data);
+                        }
+                
 
                         // Check if upload destruction was enabled
                         if(strtoupper($download['destruct']) == 'YES') {
@@ -194,6 +205,14 @@ class Handler extends CI_Controller {
 
                                 // Download the file from the external source
                                 $handlerLibrary->download($download_id, $file[0]['file'], $file[0]['secret_code'] . '-' . $file[0]['file'], $download['encrypt'], $download['size']);
+                                if(! empty($this->session->droppy_premium)){
+                                    $this->load->model('notifications');
+                                    $data = array(
+                                        "user_id" => $this->session->droppy_premium,
+                                        "title"   =>  "File ".$file[0]['file']."download successfull",
+                                    );
+                                    $this->notifications->create($data);
+                                }
                             }
                             elseif(!empty($download['encrypt'])) {
                                 $this->load->library('CompleteHandler');

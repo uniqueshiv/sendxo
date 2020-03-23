@@ -81,22 +81,30 @@
 				<div class="col-6 col-md-3 topbar" style="clear: both;">
 						<ul class="nav navbar-nav" style="display:inline-block;">
 							<li class="nav-item dropdown">
+
+								<?php
+								if(!empty($_SESSION['droppy_premium'])){ ?>
 								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<img src="assets/themes/<?php echo $settings['theme'] ?>/img/noton.png" class="infobar" alt="notifications">
+									 <?php if(!empty($notifications)){ echo count($notifications);}?>
 								</a>
-								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-									<?php
-									
-									// $notifications = modules::run('address/test');
 
-									// foreach($notifications->result() as $notification){
-									// 	echo "<li><a href=\"".base_url('notifications/'.$notification->id)."\">".$notification->title."</a></li>";
-									// } ?>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+									<ul>
+									<?php
+									foreach($notifications as $notification){
+										//echo "<li><a href=\"".base_url('notifications/'.$notification['id'])."\">".$notification['title']."</a></li>";
+										echo '<li> <a href="'.base_url().'/notification">'.$notification['title'].' </a><button id="dismissNotification" onclick="dosomething('.$notifications['id'].')" >dissmis</button></li>';
+									}
+									if(count($notifications)<=0) echo "There is not notifications";
+									?>
+									</ul>
 								</div>
+								<?php } ?>
 							</li>
 						</ul>
 					
-					<img src="assets/themes/<?php echo $settings['theme'] ?>/img/msgon.png" class="infobar" alt="messages">
+					<!-- <img src="assets/themes/<?php echo $settings['theme'] ?>/img/msgon.png" class="infobar" alt="messages"> -->
 					
 					
 					<div class="toplang langpick lng lngPicker">

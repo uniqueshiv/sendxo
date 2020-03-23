@@ -238,6 +238,7 @@ class Uploads extends CI_Model {
         $this->db->where('upload_id', $data['upload_id']);
         $this->db->where('status', 'processing');
         if($this->db->update('droppy_uploads', $update)) {
+            
             return true;
         }
         return false;
